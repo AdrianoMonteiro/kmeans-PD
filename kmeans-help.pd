@@ -1,0 +1,122 @@
+#N canvas 73 201 1100 431 10;
+#X msg -474 89 6 15 15 11 15 7 5 13 11 6 \, 14 5 12 15 6 2 16 12 9
+0 \, 16 9 17 9 12 14 19 0 7 12 \, 41 58 42 57 52 47 48 42 47 44 \,
+46 52 54 47 57 44 57 45 59 49 \, 40 46 40 53 55 50 55 51 42 55 \, 98
+93 99 90 98 97 82 83 96 98 \, 91 89 94 98 98 85 96 91 85 93 \, 99 81
+96 94 87 85 98 97 89 87 \, 44 49 51 41 41 43 52 53 54 47 \, 98 93 88
+80 96 86 98 92 92 80 \, 6 1 0 14 15 2 4 14 6 13;
+#X obj -474 285 print;
+#X floatatom -425 299 5 0 0 3 cost - -;
+#X floatatom -375 327 5 0 0 3 cluster - -;
+#X text 207 125 Arguments:;
+#X text 207 143 \$1: data dimension (list lenght): default 1;
+#X text 207 159 \$2: maximum of elements: default 10;
+#X text 207 177 \$3: number of clusters: default 2;
+#X text 206 193 \$4: number of iterations: default 0;
+#X obj -461 241 r right;
+#X obj -474 262 kmeans 10 12 3 10;
+#X obj -464 181 bng 15 250 50 0 empty empty classify 17 7 0 10 -262144
+-1 -1;
+#N canvas 113 123 1071 430 methods 0;
+#X msg 45 107 max 15;
+#X msg 56 161 clusters \$1;
+#X floatatom 56 141 5 0 0 0 - - -;
+#X msg 589 151 clear;
+#X msg 563 69 dump;
+#X msg 576 120 get $;
+#X msg 66 210 iterations 0;
+#X msg 70 232 iterations 50;
+#X msg 597 185 get_clusters_means;
+#X obj 34 276 s right;
+#X msg 34 65 reset 5 5;
+#X msg 603 218 normalize;
+#X text 101 56 changes data dimension and maximum number of elements
+;
+#X text 135 157 changes the number of clusters to classify.;
+#X text 28 17 To control same parameters as arguments:;
+#X obj 563 298 s right;
+#X floatatom 576 98 5 0 0 0 - - -;
+#X text 99 70 (it also clears internal buffers containing the training
+set).;
+#X text 94 102 changes the maximum of elements - (it keeps data in
+buffers if they are included in the new buffer size limit).;
+#X text 155 216 changes the number of iterations.;
+#X text 547 15 Other methods:;
+#X msg 607 256 precision 0.5;
+#X text 114 258 More iterations means more precision \, but it also
+increases the computacional cost.;
+#X text 113 295 In each iteration new clusters'means are randomically
+selected from the trainig set and the algorithm converges to local
+minimums with different cost functions (precision). Because of that
+\, several iterations enables kmeans to search for clusters' means
+with a lower cost function (more precison).;
+#X text 598 66 return all data in the trainig set through the left
+outlet;
+#X text 718 185 return clusters' means calculated in the last run.
+;
+#X text 617 117 retun one especific element in the data buffer;
+#X text 629 149 clear memory and re-start data insertion;
+#X text 672 215 normalize all data in the training set (max value =
+1);
+#X text 698 256 set a threshold for the cost function of each iteration.
+This threshold is responsible to stop kmeans process at each iteration.
+Lower precision values minimize errors but they are more computationaly
+expensive.;
+#X connect 0 0 9 0;
+#X connect 1 0 9 0;
+#X connect 2 0 1 0;
+#X connect 3 0 15 0;
+#X connect 4 0 15 0;
+#X connect 5 0 15 0;
+#X connect 6 0 9 0;
+#X connect 7 0 9 0;
+#X connect 8 0 15 0;
+#X connect 10 0 9 0;
+#X connect 11 0 15 0;
+#X connect 16 0 5 0;
+#X connect 21 0 15 0;
+#X restore -197 391 pd methods;
+#X msg -375 195 5 0 4 15 19 18 4 4 2 17;
+#X msg -360 236 46 49 57 40 53 51 55 40 40 47;
+#X msg -367 216 92 93 82 96 84 84 80 91 81 83;
+#X text 206 238 outlets:;
+#X text 204 22 inlets:;
+#X text -197 271 steps:;
+#X text -195 291 1 - insert trainig set;
+#X text -475 36 Training Set:;
+#X text 204 67 right inlet receives external data to classify according
+clusters found for training set.;
+#X text -475 50 12 list of 10 elements separated by commas (or 12 data
+with 10 dimensions). The lists can also be sent separately.;
+#X text -100 111 with values between 0-20;
+#X text -100 128 with values between 40-60;
+#X text -101 144 with values between 80-100;
+#X text -494 2 KMEANS - CLUSTERIZATION ALGORITHM.;
+#X text -101 95 in this example there are 3 classes of lists:;
+#X text -196 307 2 - press the "classify" bang to start trainng;
+#X text -171 206 classification set (not included in the training set)
+;
+#X text -196 323 3 - find a classification for the data sent to the
+;
+#X text -173 338 right inlet;
+#X text -199 361 To change parameters dinamically and to use other
+functions \, see:;
+#X text 204 44 left inlet receives a training set and messages (methods)
+;
+#X text 205 347 right outlet returns the classification (cluster association)
+for a list received in the right inlet \, according to the clusters
+calculated from the training set.;
+#X text 207 262 left outlet returns the classification fro the training
+set and responses to messages;
+#X text 205 298 middle outlet returns the cost function \, which is
+the average of the differences between each data in the trainig set
+and their respective clusters;
+#X connect 0 0 10 0;
+#X connect 9 0 10 0;
+#X connect 10 0 1 0;
+#X connect 10 1 2 0;
+#X connect 10 2 3 0;
+#X connect 11 0 10 0;
+#X connect 13 0 10 1;
+#X connect 14 0 10 1;
+#X connect 15 0 10 1;
